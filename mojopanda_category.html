@@ -1,0 +1,247 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mojo Video and Image Slider</title>
+<style>
+.mojo-slider-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mojo-slider-content {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 400px;  /* Default height */
+}
+
+.mojo-slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+#mojo-video-slide {
+    display: block;
+}
+
+#mojo-video-slide video,
+#mojo-image-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#mojo-image-slide {
+    position: relative;
+}
+
+#Shop_the_warmth a {
+    text-decoration: none;
+    color: #fff;
+    border: none;
+    font-family: Montserrat, sans-serif;
+    text-transform: uppercase;
+}
+
+#Shop_the_warmth {
+    border: 2px solid #C4717A;
+    border-radius: 4px;
+    background: #C4717A;
+    color: #fff;
+    font-size: 14px;
+    font-family: Montserrat, sans-serif;
+    position: absolute;
+    padding: 10px;
+    right: 230px;
+    bottom: 35%;
+    z-index: 10;
+}
+
+.mojo-dots-container {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.mojo-dot {
+    width: 15px;
+    height: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mojo-dot.active {
+    background-color: #717171;
+}
+
+/* Media Queries */
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .mojo-slider-content {
+        height: 507px;  
+    }
+
+    #Shop_the_warmth {
+        right: 230px;
+        bottom: 35%;
+    }
+}
+
+/* Tablet (768px to 1023px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .mojo-slider-content {
+        height: 450px;
+    }
+
+    #Shop_the_warmth {
+        right: 150px;
+        bottom: 25%;
+    }
+}
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+    .mojo-slider-content {
+        height: 250px;
+    }
+    
+    #Shop_the_warmth {
+        right: 70px;
+        bottom: 25%;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mojo-slider-content {
+        height: 210px;
+    }
+
+    #Shop_the_warmth {
+        font-size: 10px;
+        right: 10px;
+        bottom: 27%;
+    }
+}
+
+@media (max-width: 375px) {
+    .mojo-slider-content {
+        height: 180px;
+    }
+
+    #Shop_the_warmth {
+       width:100px;
+       height:20px;
+        font-size: 8px;
+        padding:0px;
+        left:4px;
+        bottom: 29%;
+    }
+}
+</style>
+
+<div class="mojo-slider-container">
+    <div class="mojo-slider-content">
+        <div class="mojo-slide" id="mojo-video-slide">
+            <a href="https://www.mojopanda.co.in/collections/cardigans-for-her">
+              <video id="myVideo" muted autoplay>
+                <source src="https://cdn.shopify.com/videos/c/o/v/cd2ca84a8be34bcdadd42f533a455dc9.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </a>
+        </div>
+        <div class="mojo-slide" id="mojo-image-slide">
+            <a href="https://www.mojopanda.co.in/collections/cardigans-for-her">
+                <img src="https://cdn.shopify.com/s/files/1/0409/1595/9958/files/homepage_banner_video.png?v=1734081571" alt="Image Slide" width="100%" height="100%">
+            </a>
+            <button id="Shop_the_warmth">
+                <a href="https://www.mojopanda.co.in/collections/cardigans-for-her">Shop the warmth</a>
+            </button>
+        </div>
+    </div>
+
+    <div class="mojo-dots-container">
+        <span class="mojo-dot" id="mojo-video-dot"></span>
+        <span class="mojo-dot" id="mojo-image-dot"></span>
+    </div>
+</div>
+
+<script>
+const mojoVideoSlide = document.getElementById('mojo-video-slide');
+const mojoImageSlide = document.getElementById('mojo-image-slide');
+const mojoVideoDot = document.getElementById('mojo-video-dot');
+const mojoImageDot = document.getElementById('mojo-image-dot');
+const mojoSlides = [mojoVideoSlide, mojoImageSlide];
+const mojoDots = [mojoVideoDot, mojoImageDot];
+
+let mojoCurrentIndex = 0;
+
+function mojoUpdateSlider() {
+    mojoSlides.forEach((slide, index) => {
+        slide.style.display = 'none';
+        mojoDots[index].classList.remove('active');
+    });
+
+    mojoSlides[mojoCurrentIndex].style.display = 'block';
+    mojoDots[mojoCurrentIndex].classList.add('active');
+    
+    if (mojoCurrentIndex === 0) {
+        const video = mojoVideoSlide.querySelector('video');
+        if (video) {
+            video.play();
+        }
+    } else {
+        const video = mojoVideoSlide.querySelector('video');
+        if (video) {
+            video.pause();
+        }
+    }
+}
+
+mojoVideoDot.addEventListener('click', () => {
+    mojoCurrentIndex = 0;
+    mojoUpdateSlider();
+});
+
+mojoImageDot.addEventListener('click', () => {
+    mojoCurrentIndex = 1;
+    mojoUpdateSlider();
+});
+
+mojoUpdateSlider();
+
+let video = document.getElementById('myVideo');
+
+// Unmute the video when it starts playing
+video.addEventListener('play', function() {
+    video.muted = false;  // Unmute the video when it starts playing.
+});
+
+video.addEventListener('ended', function() {
+    const shopButton = document.getElementById('mojo-image-dot');
+    if (shopButton) {
+        shopButton.click();
+        banner_call();
+    }
+});
+
+function banner_call() {
+   let intervalId = setInterval(() => {
+       let video_back = document.getElementById('mojo-video-dot');
+       if (video_back) {
+           video_back.click();
+       }
+   }, 5000);
+
+   setTimeout(() => {
+       clearInterval(intervalId);
+   }, 5000);
+}
+</script>
